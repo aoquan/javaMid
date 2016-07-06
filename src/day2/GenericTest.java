@@ -1,10 +1,16 @@
 package day2;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
+import day1.*;
 
 public class GenericTest {
 
@@ -58,8 +64,34 @@ public class GenericTest {
 		Object obj = "123";
 		String x3 = autoConvert(obj);
 		
+		copy1(new Vector<String>(),new String[10]);//类型推断
+		//copy1(new Vector<Date>(),new String[10]);//类型推断传播
+		copy2(new Date[10],new String[10]);
+		
+		
+		GenericDao<ReflectPoint> dao  = new GenericDao<ReflectPoint>();
+		dao.add(new ReflectPoint(3,3));
+		
+		//Vector<Date> v1 = new Vector<Date>();
+		
+		//通过反射获取泛型的参数类型
+		Method applyMethod = GenericTest.class.getMethod("applyVector", Vector.class);
+		Type[] types = applyMethod.getGenericParameterTypes();
+		ParameterizedType  pType = (ParameterizedType)types[0];
+		System.out.println(pType.getRawType());
+		System.out.println(pType.getActualTypeArguments()[0]);
 		
 	}
+	
+	public static void applyVector(Vector<Date> v1){
+		
+	}
+	/*
+	* 以下非重载，因为去类型化，该date以及Integer都是给编译器看的，运行过程中没有Vector<Date> 和 Vector<Integer>没有区别（字节码相同）
+	public static void applyVector(Vector<Integer> v1){
+		
+	}
+	*/
 	
 	private static <T> void fillArray(T[] a, T obj){
 		for (int i=0;i<a.length;i++){
