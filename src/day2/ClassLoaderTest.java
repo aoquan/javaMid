@@ -19,6 +19,10 @@ public class ClassLoaderTest {
 			loader = loader.getParent();
 		}
 		System.out.println(loader);
+		
+		System.out.println(new ClassLoaderAttachment().toString());
+		
+		
 	}
 
 }
